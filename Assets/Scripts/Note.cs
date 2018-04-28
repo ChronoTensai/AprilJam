@@ -1,13 +1,15 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
 public class Note : MonoBehaviour {
 
-    private TypeOfNotes _noteType;   
+    private TypeOfNotes _noteType;
     private MeshFilter _meshFilter;
     private Renderer _renderer;
+    private float   _xPosition;
 
     public TypeOfNotes NoteType
     {
@@ -62,4 +64,30 @@ public class Note : MonoBehaviour {
         }
         NoteRenderer.material.color = newColor;
     }
+
+    #region Pool
+    private bool isAvaialbleforPop = false;
+
+    private Action<Note> _returnCallback;
+
+    public void SetReturnPoolCallback(Action<Note> returnCallback)
+    {
+        _returnCallback = returnCallback;
+    }
+
+    public void Pop()
+    {
+        gameObject.SetActive(true);
+        isAvaialbleforPop = false;
+    }
+
+    private void Push()
+    {
+        _returnCallback(this);
+        gameObject.SetActive(false);
+        isAvaialbleforPop = true;
+    }
+
+    #endregion
+
 }
