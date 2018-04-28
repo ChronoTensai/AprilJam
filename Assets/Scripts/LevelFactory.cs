@@ -12,6 +12,8 @@ public class NoteInfo
     public float XPosition;
     public float Duration;
     public GeometryDeformation[] Deformations;
+    [HideInInspector]
+    public float Velocity;
 }
 
 public class LevelFactory : MonoBehaviour {
@@ -19,6 +21,9 @@ public class LevelFactory : MonoBehaviour {
     private const int POOL_SIZE = 15;
 
     public float StartSongAt = 0;
+    public float TempoSong = 5;
+
+
     public List<NoteInfo> NotesInfo;
 
     private Note[] _notePool;

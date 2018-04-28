@@ -10,6 +10,7 @@ public class Note : MonoBehaviour {
     private MeshFilter _meshFilter;
     private Renderer _renderer;
     private float   _xPosition;
+    private float _velocity = 5;
 
     public TypeOfNotes NoteType
     {
@@ -63,10 +64,19 @@ public class Note : MonoBehaviour {
 
         }
         NoteRenderer.material.color = newColor;
+
+        _velocity = noteInfo.Velocity;
     }
 
     #region Pool
     private bool isAvaialbleforPop = false;
+    public bool IsAvaialbleforPop
+    {
+        get
+        {
+            return isAvaialbleforPop;
+        }
+    }
 
     private Action<Note> _returnCallback;
 
