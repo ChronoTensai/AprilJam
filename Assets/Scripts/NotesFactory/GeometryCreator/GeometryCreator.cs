@@ -13,7 +13,7 @@ public class GeometryDeformation
 
 public static class GeometryCreator  {
 
-    private const float width = 2;
+    private const float width = 0.5f;
 
     public static Mesh CreateNote(float duration, GeometryDeformation[] deformations)
     {
