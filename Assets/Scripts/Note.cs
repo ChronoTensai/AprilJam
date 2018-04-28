@@ -8,6 +8,7 @@ public class Note : MonoBehaviour {
 
     private TypeOfNotes _noteType;
     private MeshFilter _meshFilter;
+    private MeshCollider _meshCollider;
     private Renderer _renderer;
     private float   _xPosition;
     private float _velocity = 5;
@@ -30,6 +31,16 @@ public class Note : MonoBehaviour {
         }
     }
 
+    private MeshCollider NoteMeshCollider
+    {
+        get
+        {
+            if (_meshCollider == null)
+                _meshCollider = this.GetComponent<MeshCollider>();
+            return _meshCollider;
+        }
+    }
+
     private Renderer NoteRenderer
     {
         get
@@ -43,6 +54,9 @@ public class Note : MonoBehaviour {
     public void UpdateNote(NoteInfo noteInfo)
     {
         NoteMeshFilter.mesh = GeometryCreator.CreateNote(noteInfo.Duration, noteInfo.Deformations);
+        NoteMeshCollider.sharedMesh = null;
+        NoteMeshCollider.sharedMesh = NoteMeshFilter.mesh;
+
         _noteType = noteInfo.NoteType;
 
         Color newColor = Color.white;
@@ -63,8 +77,9 @@ public class Note : MonoBehaviour {
                 break;
 
         }
-        NoteRenderer.material.color = newColor;
 
+        NoteRenderer.material.color = newColor;
+        _xPosition = noteInfo.XPosition;
         _velocity = noteInfo.Velocity;
     }
 
@@ -85,19 +100,30 @@ public class Note : MonoBehaviour {
         _returnCallback = returnCallback;
     }
 
-    public void Pop()
+    public void PopFromPool(float timeReturn)
     {
+        Debug.Assert(IsAvaialbleforPop == false, "The pool size is to small");
+        transform.position = new Vector3(_xPosition, transform.position.y);
         gameObject.SetActive(true);
         isAvaialbleforPop = false;
+        Invoke("PushToPool", timeReturn); //Durisimo
     }
 
-    private void Push()
+    public void PushToPool()
     {
-        _returnCallback(this);
+        CancelInvoke("PushToPool");
+        if (_returnCallback != null)
+            _returnCallback(this);
         gameObject.SetActive(false);
         isAvaialbleforPop = true;
     }
 
     #endregion
+
+
+    void Update()
+    {
+        this.transform.Translate(Vector3.up * _velocity * -1 * Time.deltaTime);
+    }
 
 }

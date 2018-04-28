@@ -14,6 +14,8 @@ public class NoteInfo
     public GeometryDeformation[] Deformations;
     [HideInInspector]
     public float Velocity;
+    [HideInInspector]
+    public float TimeDelta = 0;
 }
 
 public class LevelFactory : MonoBehaviour {
@@ -22,7 +24,7 @@ public class LevelFactory : MonoBehaviour {
 
     public float StartSongAt = 0;
     public float TempoSong = 5;
-
+    public float TimeToReturnPool = 4;
 
     public List<NoteInfo> NotesInfo;
 
@@ -36,6 +38,7 @@ public class LevelFactory : MonoBehaviour {
         GetAudioSource();
         ApplyFastFoward();
         CreateNotePool();
+        GetStartNotesPosition();
     }
 
     private void Start()
@@ -72,6 +75,13 @@ public class LevelFactory : MonoBehaviour {
         }
     }
 
+    float StartYPosition = 0;
+
+    private void GetStartNotesPosition()
+    {
+        StartYPosition = Camera.main.ScreenToWorldPoint(new Vector3(0, 1024)).y -3f;
+    }
+
     private Vector3 poolPosition = new Vector3(1000, 1000, 1000);
 
     private void CreateNotePool()
@@ -80,10 +90,12 @@ public class LevelFactory : MonoBehaviour {
 
         _notePool = new Note[POOL_SIZE];
 
-        for (int i = 0; i < POOL_SIZE; i++)
+        for (int i = 0; i < POOL_SIZE && i < NotesInfo.Count ; i++)
         {
+
             GameObject go = GameObject.Instantiate<GameObject>(notePrefab, poolPosition, Quaternion.identity);
             _notePool[i] = go.GetComponent<Note>();
+            NotesInfo[i].Velocity = TempoSong;
             _notePool[i].UpdateNote(NotesInfo[i]);
             _notePool[i].SetReturnPoolCallback(ReturnToPool);
         }
@@ -94,16 +106,37 @@ public class LevelFactory : MonoBehaviour {
         //DoSomeShit
     }
 
+
+    int noteIndex = 0;
+    int poolIndex = 0;
+    float timePassed = 0;
+
     private void StartLevel()
     {
         MelodySource.Play();
         BaseSource.Play();
+        timePassed += NotesInfo[noteIndex].StartAt;
+        Invoke("SendNote", NotesInfo[0].StartAt);
     }
 
-    private void SendNotes()
+    private void SendNote()
     {
+        if (poolIndex > POOL_SIZE)
+        {
+            poolIndex = 0;
+        }
+        _notePool[poolIndex].gameObject.transform.position = new Vector3(0, StartYPosition);
+        _notePool[poolIndex].PopFromPool(TimeToReturnPool);
+        timePassed += NotesInfo[noteIndex].TimeDelta;
+
+        noteIndex++;
+        poolIndex++;
         
-        
+        if (noteIndex < NotesInfo.Count)
+        {
+            NotesInfo[noteIndex].TimeDelta = NotesInfo[noteIndex].StartAt - timePassed;
+            Invoke("SendNote", NotesInfo[noteIndex].TimeDelta);
+        }
     }
 
 

@@ -17,6 +17,8 @@ public static class GeometryCreator  {
 
     public static Mesh CreateNote(float duration, GeometryDeformation[] deformations)
     {
+        duration = duration == 0 ? 0.25f : duration;
+
         Mesh mesh = new Mesh();
         Vector3[] vertices;
 
