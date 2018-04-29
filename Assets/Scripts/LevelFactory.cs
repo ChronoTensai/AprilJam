@@ -13,8 +13,6 @@ public class NoteInfo
     public float Duration;
     public GeometryDeformation[] Deformations;
     [HideInInspector]
-    public float Velocity;
-    [HideInInspector]
     public float TimeDelta = 0;
 }
 
@@ -23,7 +21,7 @@ public class LevelFactory : MonoBehaviour {
     private const int POOL_SIZE = 15;
 
     public float StartSongAt = 0;
-    public float TempoSong = 5;
+    public float Tempo = 5;
     public float TimeToReturnPool = 4;
 
     public List<NoteInfo> NotesInfo;
@@ -58,15 +56,16 @@ public class LevelFactory : MonoBehaviour {
     {
         if (StartSongAt != 0)
         {
-            foreach (var item in NotesInfo)
+            for (int i = 0; i < NotesInfo.Count; i++)
             {
-                if (item.StartAt < StartSongAt)
+                if (NotesInfo[i].StartAt < StartSongAt)
                 {
-                    NotesInfo.Remove(item);
+                    NotesInfo.RemoveAt(i);
+                    i--;
                 }
                 else
                 {
-                    item.StartAt -= StartSongAt;
+                    NotesInfo[i].StartAt -= StartSongAt;
                 }
             }
 
@@ -95,7 +94,7 @@ public class LevelFactory : MonoBehaviour {
 
             GameObject go = GameObject.Instantiate<GameObject>(notePrefab, poolPosition, Quaternion.identity);
             _notePool[i] = go.GetComponent<Note>();
-            NotesInfo[i].Velocity = TempoSong;
+            _notePool[i].Velocity = Tempo;
             _notePool[i].UpdateNote(NotesInfo[i]);
             _notePool[i].SetReturnPoolCallback(ReturnToPool);
         }
@@ -121,10 +120,16 @@ public class LevelFactory : MonoBehaviour {
 
     private void SendNote()
     {
-        if (poolIndex > POOL_SIZE)
+        if (poolIndex == POOL_SIZE)
         {
             poolIndex = 0;
         }
+
+        if (noteIndex >= POOL_SIZE)
+        {
+            _notePool[poolIndex].UpdateNote(NotesInfo[noteIndex]);
+        }
+
         _notePool[poolIndex].gameObject.transform.position = new Vector3(0, StartYPosition);
         _notePool[poolIndex].PopFromPool(TimeToReturnPool);
         timePassed += NotesInfo[noteIndex].TimeDelta;

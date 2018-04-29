@@ -13,6 +13,15 @@ public class Note : MonoBehaviour {
     private float   _xPosition;
     private float _velocity = 5;
 
+    public float Velocity
+    {
+        set
+        {
+            _velocity = value;
+        }
+    }
+
+
     public TypeOfNotes NoteType
     {
         get
@@ -80,11 +89,10 @@ public class Note : MonoBehaviour {
 
         NoteRenderer.material.color = newColor;
         _xPosition = noteInfo.XPosition;
-        _velocity = noteInfo.Velocity;
     }
 
     #region Pool
-    private bool isAvaialbleforPop = false;
+    private bool isAvaialbleforPop = true;
     public bool IsAvaialbleforPop
     {
         get
@@ -102,7 +110,7 @@ public class Note : MonoBehaviour {
 
     public void PopFromPool(float timeReturn)
     {
-        Debug.Assert(IsAvaialbleforPop == false, "The pool size is to small");
+        Debug.Assert(IsAvaialbleforPop == true, "The pool size is too small");
         transform.position = new Vector3(_xPosition, transform.position.y);
         gameObject.SetActive(true);
         isAvaialbleforPop = false;

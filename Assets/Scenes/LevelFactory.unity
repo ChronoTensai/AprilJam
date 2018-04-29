@@ -285,6 +285,11 @@ Prefab:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.size
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4601731912075852, guid: 234f7a2788111b1459f47f8a70230a68, type: 2}
       propertyPath: m_LocalPosition.x
       value: -3.1802025
@@ -316,6 +321,81 @@ Prefab:
     - target: {fileID: 4601731912075852, guid: 234f7a2788111b1459f47f8a70230a68, type: 2}
       propertyPath: m_RootOrder
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[0].StartAt
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[1].StartAt
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[2].StartAt
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[2].NoteType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[2].XPosition
+      value: 2.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[2].Duration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[3].StartAt
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[3].NoteType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[3].XPosition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[3].Duration
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: TimeToReturnPool
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: TempoSong
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: Tempo
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: NotesInfo.Array.data[0].XPosition
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 114385777206333064, guid: 234f7a2788111b1459f47f8a70230a68,
+        type: 2}
+      propertyPath: StartSongAt
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 234f7a2788111b1459f47f8a70230a68, type: 2}
