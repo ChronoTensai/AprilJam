@@ -51,9 +51,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 60f1e8b0fbe00d74a926bfabcf939ee7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  StartSongAt: 80
+  EditingLevel: 1
+  StartSongAt: 160
   Tempo: 3
-  TimeToReturnPool: 10
+  TimeToReturnPool: 50
   NotesInfo:
   - StartAt: 8.2
     NoteType: 0
@@ -475,11 +476,11 @@ MonoBehaviour:
     Velocity: 0
     TimeDelta: 0
   - StartAt: 92.5
-    NoteType: 0
+    NoteType: 1
     XPosition: -1
     Duration: 14
     Deformations:
-    - startIn: 0
+    - startIn: 1
       Xoffset: -2
     - startIn: 3
       Xoffset: 0
@@ -487,6 +488,269 @@ MonoBehaviour:
       Xoffset: 2
     - startIn: 9
       Xoffset: -1
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 97.5
+    NoteType: 2
+    XPosition: -1
+    Duration: 16
+    Deformations:
+    - startIn: 1
+      Xoffset: -1
+    - startIn: 5
+      Xoffset: 0
+    - startIn: 8
+      Xoffset: -1
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 103.5
+    NoteType: 3
+    XPosition: 0
+    Duration: 14
+    Deformations:
+    - startIn: 1
+      Xoffset: 1
+    - startIn: 5
+      Xoffset: 0
+    - startIn: 8
+      Xoffset: 1
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 109
+    NoteType: 0
+    XPosition: 0
+    Duration: 14
+    Deformations:
+    - startIn: 5
+      Xoffset: -3
+    - startIn: 10
+      Xoffset: 3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 114.5
+    NoteType: 3
+    XPosition: 0
+    Duration: 15
+    Deformations:
+    - startIn: 5
+      Xoffset: -3
+    - startIn: 10
+      Xoffset: 3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 120
+    NoteType: 1
+    XPosition: 0
+    Duration: 15
+    Deformations:
+    - startIn: 5
+      Xoffset: 3
+    - startIn: 10
+      Xoffset: -3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 125.7
+    NoteType: 2
+    XPosition: 0
+    Duration: 15
+    Deformations:
+    - startIn: 5
+      Xoffset: 3
+    - startIn: 10
+      Xoffset: -3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 131
+    NoteType: 0
+    XPosition: 0
+    Duration: 16
+    Deformations:
+    - startIn: 3
+      Xoffset: -3
+    - startIn: 9
+      Xoffset: 3
+    - startIn: 14
+      Xoffset: -3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 137
+    NoteType: 1
+    XPosition: 0
+    Duration: 14
+    Deformations:
+    - startIn: 3
+      Xoffset: 3
+    - startIn: 9
+      Xoffset: -3
+    - startIn: 13
+      Xoffset: 3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 142.5
+    NoteType: 2
+    XPosition: 2.8
+    Duration: 15
+    Deformations:
+    - startIn: 10
+      Xoffset: -5
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 148
+    NoteType: 0
+    XPosition: -3
+    Duration: 15
+    Deformations:
+    - startIn: 10
+      Xoffset: 5
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 153.5
+    NoteType: 3
+    XPosition: 0
+    Duration: 20
+    Deformations:
+    - startIn: 4
+      Xoffset: 3
+    - startIn: 8
+      Xoffset: -6
+    - startIn: 12
+      Xoffset: 3
+    - startIn: 16
+      Xoffset: -3
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 161.6
+    NoteType: 0
+    XPosition: 0.5
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 161.9
+    NoteType: 0
+    XPosition: -0.5
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 162.2
+    NoteType: 0
+    XPosition: 0
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 162.5
+    NoteType: 0
+    XPosition: -0.9
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 162.8
+    NoteType: 0
+    XPosition: -0.5
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 163.1
+    NoteType: 0
+    XPosition: -1.5
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 163.5
+    NoteType: 2
+    XPosition: -1
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 163.8
+    NoteType: 2
+    XPosition: -2
+    Duration: 0.5
+    Deformations: []
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 164.7
+    NoteType: 2
+    XPosition: -3
+    Duration: 16
+    Deformations:
+    - startIn: 7
+      Xoffset: 6
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 170.3
+    NoteType: 3
+    XPosition: 2.8
+    Duration: 14
+    Deformations:
+    - startIn: 7
+      Xoffset: -6
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 175.6
+    NoteType: 2
+    XPosition: -3
+    Duration: 16
+    Deformations:
+    - startIn: 2
+      Xoffset: 3
+    - startIn: 4
+      Xoffset: -3
+    - startIn: 6
+      Xoffset: 3
+    - startIn: 8
+      Xoffset: -2
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 181.5
+    NoteType: 1
+    XPosition: 0
+    Duration: 16
+    Deformations:
+    - startIn: 2
+      Xoffset: 3
+    - startIn: 4
+      Xoffset: -3
+    - startIn: 6
+      Xoffset: 3
+    - startIn: 8
+      Xoffset: -2
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 187.4
+    NoteType: 0
+    XPosition: -3
+    Duration: 16
+    Deformations:
+    - startIn: 2
+      Xoffset: 3
+    - startIn: 4
+      Xoffset: -3
+    - startIn: 6
+      Xoffset: 3
+    - startIn: 8
+      Xoffset: -2
+    Velocity: 0
+    TimeDelta: 0
+  - StartAt: 193.3
+    NoteType: 1
+    XPosition: 0
+    Duration: 16
+    Deformations:
+    - startIn: 2
+      Xoffset: 3
+    - startIn: 4
+      Xoffset: -3
+    - startIn: 6
+      Xoffset: 3
+    - startIn: 8
+      Xoffset: -2
     Velocity: 0
     TimeDelta: 0
   ShowSongSeconds: 1
