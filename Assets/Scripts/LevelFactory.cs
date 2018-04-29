@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEditor;
 
 
 [System.Serializable]
@@ -36,6 +37,9 @@ public class LevelFactory : MonoBehaviour {
 
     void Awake ()
     {
+        
+        EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
+
         GetAudioSource();
         ApplyFastFoward();
         CreateNotePool();
@@ -49,10 +53,14 @@ public class LevelFactory : MonoBehaviour {
 
     private void OnGUI()
     {
-        if (ShowSongSeconds && MelodySource != null)
+        if (MelodySource != null)
         {
-            GUI.Label(new Rect(20, 100, 500, 30), "Song Seconds: " + MelodySource.time);
-        }   
+            songSeconds = MelodySource.time;
+            if (ShowSongSeconds)
+            {
+                GUI.Label(new Rect(20, 100, 500, 30), "Song Seconds: " + MelodySource.time);
+            }
+        }
     }
 
     private void GetAudioSource()
@@ -72,6 +80,7 @@ public class LevelFactory : MonoBehaviour {
                 if (NotesInfo[i].StartAt < StartSongAt)
                 {
                     NotesInfo.RemoveAt(i);
+                    notesDeleted++;
                     i--;
                 }
                 else
@@ -122,6 +131,9 @@ public class LevelFactory : MonoBehaviour {
     int poolIndex = 0;
     float timePassed = 0;
 
+    int notesDeleted = 0;
+    float songSeconds = 0;
+
     private void StartLevel()
     {
         MelodySource.Play();
@@ -162,6 +174,19 @@ public class LevelFactory : MonoBehaviour {
         {
             NotesInfo[noteIndex].TimeDelta = NotesInfo[noteIndex].StartAt - timePassed;
             Invoke("SendNote", NotesInfo[noteIndex].TimeDelta);
+        }
+    }
+
+    
+    void HandleOnPlayModeChanged(PlayModeStateChange newState)
+    {
+        if (EditorApplication.isPaused == true)
+        {
+            Debug.Log("Pause! Song Seconds: " + songSeconds + " Last Note Index: " + noteIndex );
+        }
+        else if (EditorApplication.isPlaying == false)
+        {
+            Debug.Log("Stop! Song Seconds: " + songSeconds + " Last Note Index: " + (noteIndex + notesDeleted));
         }
     }
 
