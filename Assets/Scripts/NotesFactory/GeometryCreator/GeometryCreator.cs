@@ -110,12 +110,14 @@ public static class GeometryCreator  {
             startVertice += 2; 
         }
 
+
+
         return triangles;
     }
 
-    public static Mesh CutGeometryAtPlayerPosition(Mesh currentMesh, Vector3 cutPosition)
+    public static Mesh CutGeometryAtPosition(Mesh currentMesh, Vector3 cutPosition)
     {
-        Mesh newMesh = currentMesh;
+        Mesh newMesh = new Mesh();
 
         List<Vector3> vertex = new List<Vector3>();
         currentMesh.GetVertices(vertex);
@@ -129,7 +131,25 @@ public static class GeometryCreator  {
             }
         }
 
+        List<Vector3> newVertices = new List<Vector3>();
 
+        newVertices.Add(new Vector3(cutPosition.x, cutPosition.y, 0));
+        newVertices.Add(new Vector3(cutPosition.x + width, cutPosition.y, 0));
+        newVertices.AddRange(vertex);
+        
+
+        newMesh.vertices = newVertices.ToArray();
+
+        newMesh.triangles = CalculateTriangles(newVertices.Count);
+
+        Vector3[] normals = new Vector3[newVertices.Count];
+
+        for (int i = 0; i < normals.Length; i++)
+        {
+            normals[i] = -Vector3.forward;
+        }
+
+        newMesh.normals = normals;
 
         return newMesh;
     }

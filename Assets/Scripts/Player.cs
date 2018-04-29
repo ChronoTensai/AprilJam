@@ -11,6 +11,7 @@ public class Player : MonoBehaviour {
     private float _rightBorder;
     private MeshFilter _meshFilter;
     private Renderer _renderer;
+    private Vector3 _maskPosition;
     #endregion
 
     private TypeOfNotes PlayerColor
@@ -21,9 +22,14 @@ public class Player : MonoBehaviour {
             {
                 _playerColor = value;
                 UpdatePlayerColor();
-                if (currentNote != null)
+                for (int i = 0; i < currentNotes.Count; i++)
                 {
-                    MissNote();
+                    if (currentNotes[i].NoteType != _playerColor)
+                    {
+                        MissNote(currentNotes[i]);
+                        currentNotes.RemoveAt(i);
+                        i--;
+                    }
                 }
             }
         }
@@ -33,6 +39,9 @@ public class Player : MonoBehaviour {
     {
         GameManager.MISS_NOTE_Y = this.gameObject.transform.position.y - (gameObject.GetComponent<SpriteRenderer>().bounds.size.y /2);
         GameManager.PLAYERt = this.transform;
+        Debug.Log("heigh: " + gameObject.GetComponent<SpriteRenderer>().bounds.size.y + "  "+ this.transform.position );
+        _maskPosition = new Vector3(this.transform.position.x, -4.41f, 0.49f); //Jam code yay!
+        currentNotes = new List<Note>();
     }
 
     private void Start()
@@ -48,65 +57,87 @@ public class Player : MonoBehaviour {
         ChangeColor();
 	}
 
-    private Note currentNote;
+    private List<Note> currentNotes;
 
     private void OnTriggerEnter(Collider c)
     {
-        if (c.gameObject.layer == 9 && currentNote == null) //consulto si el layer es = al layer "Note"
+        if (c.gameObject.layer == 9 ) //consulto si el layer es = al layer "Note"
         {
-            currentNote = c.gameObject.GetComponent<Note>();
+            var e = c.gameObject.GetComponent<Note>();
 
-            if (_playerColor == currentNote.NoteType && currentNote._missed == false)//verifico si tanto player como nota son del mismo color y si el jugador no perdio ya esa la nota
+            if (_playerColor == e.NoteType && e._missed == false)//verifico si tanto player como nota son del mismo color y si el jugador no perdio ya esa la nota
             {
-                StartPlayNote();
+                currentNotes.Add(e);
+                StartPlayNote(e);
             }
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (currentNote != null)
+        if (currentNotes.Count != 0)
         {
             //Agarramos suficiente tiempo la nota como para considerarla tomada
-            if (GameManager.NotePlayed(currentNote.transform.position.y, currentNote.Duration))
+            for (int i = 0; i < currentNotes.Count; i++)
             {
-                if (currentNote.NoteType == _playerColor)
+                if (GameManager.NotePlayed(currentNotes[i].transform.position.y, currentNotes[i].Duration))
                 {
-                    currentNote.StopPlaying();
-                    currentNote = null;
+                    if (currentNotes[i].NoteType == _playerColor) 
+                    {
+                        if (currentNotes[i].Id == other.gameObject.GetComponent<Note>().Id)
+                        { 
+                            currentNotes[i].StopPlaying();
+                            currentNotes.RemoveAt(i);
+                            i--;
+                        }
+                    }
                 }
             }
+            
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.layer == 9 && currentNote != null && currentNote.Id == other.GetComponent<Note>().Id)
+        if (other.gameObject.layer == 9 && currentNotes.Count != 0)
         {
-            if (GameManager.NoteIsBeyondPlayer(currentNote.transform.position.y, currentNote.Duration))
+            for (int i = 0; i < currentNotes.Count; i++)
             {
-                //Terminanos la nota! Deberia de entrar en el otro chequeo antes
-                currentNote.StopPlaying();
-                currentNote = null;
-            }
-            else
-            {
-                //Nos fuimos antes de que termine la nota
-                MissNote();
+                if (GameManager.NotePlayed(currentNotes[i].transform.position.y, currentNotes[i].Duration))
+                {
+                    if (currentNotes[i].NoteType == _playerColor)
+                    {
+                        if (currentNotes[i].Id == other.gameObject.GetComponent<Note>().Id)
+                        {
+                            currentNotes[i].StopPlaying();
+                            currentNotes.RemoveAt(i);
+                            i--;
+                        }
+                    }
+                }
+                else
+                {
+                    if (currentNotes[i].Id == other.gameObject.GetComponent<Note>().Id)
+                    {
+                        MissNote(currentNotes[i]);
+                        currentNotes.RemoveAt(i);
+                        i--;
+                    }
+                }
             }
         }
     }
 
-    private void StartPlayNote()
+    private void StartPlayNote(Note note)
     {
-        currentNote.StartPlaying();
+        note.StartPlaying(_maskPosition);
         GameManager.MelodyAudioSource.mute = false;
     }
 
-    private void MissNote()
+    private void MissNote(Note note = null)
     {
-        currentNote.MissedNote(this.transform);
-        currentNote = null;
+        note.MissedNote(this.transform);
+        note = null;
         GameManager.MissNote();
     }
 

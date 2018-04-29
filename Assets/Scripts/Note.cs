@@ -18,6 +18,22 @@ public class Note : MonoBehaviour {
     private bool _playing = false;
 
 
+    private GameObject _mask;
+
+
+    protected int[] m_queues = new int[] { 3000 }; //No tengo idea por que 3000
+
+    protected void Awake()
+    {
+        _mask = this.transform.Find("Mask").gameObject;
+        _mask.SetActive(false);
+        Material[] materials = NoteRenderer.materials;
+        for (int i = 0; i < materials.Length && i < m_queues.Length; ++i)
+        {
+            materials[i].renderQueue = m_queues[i];
+        }
+    }
+
     public TypeOfNotes NoteType
     {
         get
@@ -93,7 +109,10 @@ public class Note : MonoBehaviour {
 
     private void CutNote(Transform playerTransform)
     {
-        NoteMeshFilter.mesh = GeometryCreator.CutGeometryAtPlayerPosition(NoteMeshFilter.mesh, this.transform.InverseTransformPoint(playerTransform.position));
+        Mesh newMesh = GeometryCreator.CutGeometryAtPosition(NoteMeshFilter.mesh, this.transform.InverseTransformPoint(playerTransform.position));
+        NoteMeshFilter.mesh = newMesh;
+
+        Debug.Break();
     }
 
 
@@ -126,6 +145,7 @@ public class Note : MonoBehaviour {
 
     private void PushToPool()
     {
+        _mask.transform.parent = this.transform;
         CancelInvoke("PushToPool");
         if (_returnCallback != null)
             _returnCallback(this);
@@ -137,8 +157,12 @@ public class Note : MonoBehaviour {
 
     #endregion
 
-    public void StartPlaying()
+    public void StartPlaying(Vector3 maskPosition)
     {
+        _mask.transform.parent = null;
+        _mask.transform.position = maskPosition;
+        _mask.SetActive(true);
+
         SetEnabledPlayingFeedback(true);
         this._playing = true;
     }
@@ -156,8 +180,7 @@ public class Note : MonoBehaviour {
 
         if (_playing && playerTransform != null)
         {
-            //CutGeometry
-            //CutNote(playerTransform);
+            _mask.transform.parent = this.transform;
         }
     }
 

@@ -10,8 +10,8 @@ public static class GameManager
 
     public const float LEFT_BORDER = 256;
     public const float RIGHT_BORDER = 768;
-    public const float GET_NOTE_THRESHOLD = 0.5F;
-    public const float MISSED_NOTE_TRESHOLD = 0.5F;
+    public const float GET_NOTE_THRESHOLD = 0.4F;
+    public const float MISSED_NOTE_TRESHOLD = 0.4F;
     public static float MISS_NOTE_Y = -1000;
 
     public static bool IsLevelEditor = false;
