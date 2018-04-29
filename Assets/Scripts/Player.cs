@@ -136,7 +136,7 @@ public class Player : MonoBehaviour {
 
     private void MissNote(Note note = null)
     {
-        note.MissedNote(this.transform);
+        note.MissedNote(_maskPosition);
         note = null;
         GameManager.MissNote();
     }

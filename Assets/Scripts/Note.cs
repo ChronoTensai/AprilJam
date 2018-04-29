@@ -146,6 +146,8 @@ public class Note : MonoBehaviour {
     private void PushToPool()
     {
         _mask.transform.parent = this.transform;
+        _mask.SetActive(false);
+
         CancelInvoke("PushToPool");
         if (_returnCallback != null)
             _returnCallback(this);
@@ -173,12 +175,12 @@ public class Note : MonoBehaviour {
         this.PushToPool();
     }
 
-    public void MissedNote(Transform playerTransform = null)
+    public void MissedNote(Vector3 maskPosition)
     {
         this._missed = true;
         SetEnabledPlayingFeedback(false);
 
-        if (_playing && playerTransform != null)
+        if (_playing)
         {
             _mask.transform.parent = this.transform;
         }
