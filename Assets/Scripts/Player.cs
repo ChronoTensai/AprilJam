@@ -34,10 +34,13 @@ public class Player : MonoBehaviour {
 
     private void OnTriggerEnter(Collider c)
     {
-        var e = c.gameObject.GetComponent<Note>();
+        if(c.gameObject.layer == 9) //consulto si el layer es = al layer "Note"
+        {
+            var e = c.gameObject.GetComponent<Note>();
 
-        //if (_playerColor == _noteColor)
-            Destroy(gameObject);
+            if (_playerColor == e.NoteType)//verifico si tanto player como nota son del mismo color
+                e.PushToPool();//llamo la funcion PushToPool de la clase "Note"               
+        }
     }
 
     #region Functions
