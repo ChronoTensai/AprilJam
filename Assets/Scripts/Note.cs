@@ -10,8 +10,11 @@ public class Note : MonoBehaviour {
     private MeshFilter _meshFilter;
     private MeshCollider _meshCollider;
     private Renderer _renderer;
+    public float Duration;
     private float   _xPosition;
     public float Velocity = 5;
+    public bool Missed = false;
+    public int Id;
 
 
     public TypeOfNotes NoteType
@@ -54,7 +57,9 @@ public class Note : MonoBehaviour {
 
     public void UpdateNote(NoteInfo noteInfo)
     {
-        NoteMeshFilter.mesh = GeometryCreator.CreateNote(noteInfo.Duration, noteInfo.Deformations);
+        Duration = noteInfo.Duration == 0 ? 0.25f : noteInfo.Duration;
+
+        NoteMeshFilter.mesh = GeometryCreator.CreateNote(Duration, noteInfo.Deformations);
         NoteMeshCollider.sharedMesh = null;
         NoteMeshCollider.sharedMesh = NoteMeshFilter.mesh;
 
@@ -82,6 +87,12 @@ public class Note : MonoBehaviour {
         NoteRenderer.material.color = newColor;
         _xPosition = noteInfo.XPosition;
     }
+
+    public void CutCurrentNote()
+    {
+        //NoteMeshFilter.mesh = GeometryCreator.CutGeometry(NoteMeshFilter.mesh);
+    }
+
 
     #region Pool
     private bool isAvaialbleforPop = true;
@@ -116,14 +127,22 @@ public class Note : MonoBehaviour {
             _returnCallback(this);
         gameObject.SetActive(false);
         isAvaialbleforPop = true;
+        Missed = false;
     }
 
     #endregion
 
 
-    void Update()
-    {
-        this.transform.Translate(Vector3.up * Velocity * -1 * Time.deltaTime);
-    }
+    // bool breakOne = false;
+     void Update()
+     {
+         this.transform.Translate(Vector3.up * Velocity * -1 * Time.deltaTime);
+
+         /*if (breakOne == false && this.transform.position.y <= -4f - Duration)
+         {
+             breakOne = true;
+             Debug.Break();
+         }*/
+}
 
 }

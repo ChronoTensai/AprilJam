@@ -69,6 +69,9 @@ public class LevelFactory : MonoBehaviour {
 
         MelodySource = audioSource.transform.Find("Melody").gameObject.GetComponent<AudioSource>();
         BaseSource = audioSource.transform.Find("Base").gameObject.GetComponent<AudioSource>();
+
+        GameManager.MelodyAudioSource = MelodySource;
+        GameManager.FailFeedbackSource = audioSource.transform.Find("FailFeedback").gameObject.GetComponent<AudioSource>();
     }
 
     private void ApplyFastFoward()
@@ -114,6 +117,7 @@ public class LevelFactory : MonoBehaviour {
 
             GameObject go = GameObject.Instantiate<GameObject>(notePrefab, poolPosition, Quaternion.identity);
             _notePool[i] = go.GetComponent<Note>();
+            _notePool[i].Id = i;
             _notePool[i].Velocity = Tempo;
 
             _notePool[i].UpdateNote(NotesInfo[i]);

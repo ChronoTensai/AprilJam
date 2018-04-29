@@ -17,8 +17,6 @@ public static class GeometryCreator  {
 
     public static Mesh CreateNote(float duration, GeometryDeformation[] deformations)
     {
-        duration = duration == 0 ? 0.25f : duration;
-
         Mesh mesh = new Mesh();
         Vector3[] vertices;
 
@@ -78,6 +76,8 @@ public static class GeometryCreator  {
         return mesh;
     }
 
+    
+
     private static int[] CalculateTriangles(int verticesCount)
     {
         int number = verticesCount - 4;
@@ -113,8 +113,14 @@ public static class GeometryCreator  {
         return triangles;
     }
 
+    public static Mesh CutGeometry(Mesh currentMesh)
+    {
+        Mesh mesh = new Mesh();
+        return mesh;
+    }
 
-	public static Mesh CreateTest ()
+
+    public static Mesh CreateTest ()
     {
 
         Mesh _mesh = new Mesh();

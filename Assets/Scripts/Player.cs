@@ -8,12 +8,27 @@ public class Player : MonoBehaviour {
     public float _movementSpeed;
     private float _playerWidth;
     private TypeOfNotes _playerColor;
-    private TypeOfNotes _noteColor;
     private float _leftBorder = 256;
     private float _rightBorder = 768;
     private MeshFilter _meshFilter;
     private Renderer _renderer;
     #endregion
+
+    private TypeOfNotes PlayerColor
+    {
+        set
+        {
+            if (_playerColor != value)
+            {
+                _playerColor = value;
+                UpdatePlayerColor();
+                if (currentNote != null)
+                {
+                    MissNote();
+                }
+            }
+        }
+    }
 
     private void Start()
     {
@@ -29,18 +44,69 @@ public class Player : MonoBehaviour {
     {
         Movement();
         ChangeColor();
-        UpdateNote();
 	}
+
+    private Note currentNote;
 
     private void OnTriggerEnter(Collider c)
     {
-        if(c.gameObject.layer == 9) //consulto si el layer es = al layer "Note"
+        if (c.gameObject.layer == 9 && currentNote == null) //consulto si el layer es = al layer "Note"
         {
-            var e = c.gameObject.GetComponent<Note>();
+            currentNote = c.gameObject.GetComponent<Note>();
 
-            if (_playerColor == e.NoteType)//verifico si tanto player como nota son del mismo color
-                e.PushToPool();//llamo la funcion PushToPool de la clase "Note"               
+            if (_playerColor == currentNote.NoteType && currentNote.Missed == false)//verifico si tanto player como nota son del mismo color
+            {
+                StartPlayNote();
+            }
         }
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (currentNote != null)
+        { 
+            if (currentNote.transform.position.y < -currentNote.Duration - 3.5f)
+            {
+                if (currentNote.NoteType == _playerColor)
+                {
+                    currentNote.PushToPool();//llamo la funcion PushToPool de la clase "Note"
+                    currentNote = null;
+                }
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == 9 && currentNote != null && currentNote.Id == other.GetComponent<Note>().Id)
+        {
+            if (currentNote.transform.position.y < -currentNote.Duration - 4f)
+            {
+                //Debug.Break();
+                currentNote.PushToPool();//llamo la funcion PushToPool de la clase "Note"
+                currentNote = null;
+            }
+            else
+            {
+                currentNote.CutCurrentNote();
+                MissNote();
+            }
+        }
+    }
+
+    private void StartPlayNote()
+    {
+        //Esto no deberia estar aca pero boeh
+        GameManager.MelodyAudioSource.mute = false;
+    }
+
+    private void MissNote()
+    {
+        //Esto no deberia estar aca pero boeh x2
+        GameManager.MelodyAudioSource.mute = true;
+        GameManager.FailFeedbackSource.Play();
+        currentNote.Missed = true;
+        currentNote = null;
     }
 
     #region Functions
@@ -58,16 +124,25 @@ public class Player : MonoBehaviour {
     private void ChangeColor()
     {
         if (Input.GetKey(KeyCode.A))
-            _playerColor = TypeOfNotes.Red;
+        {
+            PlayerColor = TypeOfNotes.Red;
+            
+        }
         else if (Input.GetKey(KeyCode.S))
-            _playerColor = TypeOfNotes.Green;
+        {
+            PlayerColor = TypeOfNotes.Green;
+        }
         else if (Input.GetKey(KeyCode.D))
-            _playerColor = TypeOfNotes.Blue;
+        {
+            PlayerColor = TypeOfNotes.Blue;
+        }
         else if (Input.GetKey(KeyCode.F))
-            _playerColor = TypeOfNotes.Yellow;
+        {
+            PlayerColor = TypeOfNotes.Yellow;
+        }
     }
 
-    public void UpdateNote()
+    public void UpdatePlayerColor()
     {
         Color newColor = Color.white;
 
