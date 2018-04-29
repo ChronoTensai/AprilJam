@@ -11,15 +11,7 @@ public class Note : MonoBehaviour {
     private MeshCollider _meshCollider;
     private Renderer _renderer;
     private float   _xPosition;
-    private float _velocity = 5;
-
-    public float Velocity
-    {
-        set
-        {
-            _velocity = value;
-        }
-    }
+    public float Velocity = 5;
 
 
     public TypeOfNotes NoteType
@@ -131,7 +123,7 @@ public class Note : MonoBehaviour {
 
     void Update()
     {
-        this.transform.Translate(Vector3.up * _velocity * -1 * Time.deltaTime);
+        this.transform.Translate(Vector3.up * Velocity * -1 * Time.deltaTime);
     }
 
 }

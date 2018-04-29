@@ -12,6 +12,7 @@ public class NoteInfo
     public float XPosition;
     public float Duration;
     public GeometryDeformation[] Deformations;
+    public float Velocity;
     [HideInInspector]
     public float TimeDelta = 0;
 }
@@ -95,6 +96,7 @@ public class LevelFactory : MonoBehaviour {
             GameObject go = GameObject.Instantiate<GameObject>(notePrefab, poolPosition, Quaternion.identity);
             _notePool[i] = go.GetComponent<Note>();
             _notePool[i].Velocity = Tempo;
+
             _notePool[i].UpdateNote(NotesInfo[i]);
             _notePool[i].SetReturnPoolCallback(ReturnToPool);
         }
@@ -128,6 +130,15 @@ public class LevelFactory : MonoBehaviour {
         if (noteIndex >= POOL_SIZE)
         {
             _notePool[poolIndex].UpdateNote(NotesInfo[noteIndex]);
+        }
+
+        if (NotesInfo[noteIndex].Velocity == 0)
+        {
+            _notePool[poolIndex].Velocity = Tempo;
+        }
+        else
+        {
+            _notePool[poolIndex].Velocity = NotesInfo[noteIndex].Velocity;
         }
 
         _notePool[poolIndex].gameObject.transform.position = new Vector3(0, StartYPosition);
