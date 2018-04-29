@@ -32,6 +32,8 @@ public class LevelFactory : MonoBehaviour {
     private AudioSource MelodySource;
     private AudioSource BaseSource;
 
+    public bool ShowSongSeconds = true;
+
     void Awake ()
     {
         GetAudioSource();
@@ -43,6 +45,14 @@ public class LevelFactory : MonoBehaviour {
     private void Start()
     {
         StartLevel();
+    }
+
+    private void OnGUI()
+    {
+        if (ShowSongSeconds && MelodySource != null)
+        {
+            GUI.Label(new Rect(20, 100, 500, 30), "Song Seconds: " + MelodySource.time);
+        }   
     }
 
     private void GetAudioSource()
