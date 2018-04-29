@@ -22,6 +22,7 @@ public class LevelFactory : MonoBehaviour {
 
     private const int POOL_SIZE = 15;
 
+    public bool EditingLevel = true;
     public float StartSongAt = 0;
     public float Tempo = 5;
     public float TimeToReturnPool = 4;
@@ -39,6 +40,7 @@ public class LevelFactory : MonoBehaviour {
     {
         
         EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
+        GameManager.IsLevelEditor = EditingLevel;
 
         GetAudioSource();
         ApplyFastFoward();
@@ -190,7 +192,7 @@ public class LevelFactory : MonoBehaviour {
         }
         else if (EditorApplication.isPlaying == false)
         {
-            Debug.Log("Stop! Song Seconds: " + songSeconds + " Last Note Index: " + (noteIndex + notesDeleted));
+            Debug.Log("Stop! Song Seconds: " + songSeconds + " Last Note Index: " + (noteIndex + notesDeleted - 1));
         }
     }
 

@@ -6,10 +6,9 @@ public class Player : MonoBehaviour {
 
     #region Variables
     public float _movementSpeed;
-    private float _playerWidth;
-    private TypeOfNotes _playerColor;
-    private float _leftBorder = 256;
-    private float _rightBorder = 768;
+    private TypeOfNotes _playerColor = TypeOfNotes.None;
+    private float _leftBorder;
+    private float _rightBorder;
     private MeshFilter _meshFilter;
     private Renderer _renderer;
     #endregion
@@ -30,14 +29,17 @@ public class Player : MonoBehaviour {
         }
     }
 
+    private void Awake()
+    {
+        GameManager.MISS_NOTE_Y = this.gameObject.transform.position.y - (gameObject.GetComponent<SpriteRenderer>().bounds.size.y /2);
+        GameManager.PLAYERt = this.transform;
+    }
+
     private void Start()
     {
-        _playerWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
-        _leftBorder = _leftBorder + _playerWidth;
-        _rightBorder = _rightBorder - _playerWidth;
-        Debug.Log(_playerWidth);
-        Debug.Log(_leftBorder);
-        Debug.Log(_rightBorder);
+        float _playerWidth = gameObject.GetComponent<SpriteRenderer>().bounds.size.x;
+        _leftBorder = GameManager.LEFT_BORDER + _playerWidth;
+        _rightBorder = GameManager.RIGHT_BORDER - _playerWidth;
     }
     
     void Update ()
@@ -54,7 +56,7 @@ public class Player : MonoBehaviour {
         {
             currentNote = c.gameObject.GetComponent<Note>();
 
-            if (_playerColor == currentNote.NoteType && currentNote.Missed == false)//verifico si tanto player como nota son del mismo color
+            if (_playerColor == currentNote.NoteType && currentNote._missed == false)//verifico si tanto player como nota son del mismo color y si el jugador no perdio ya esa la nota
             {
                 StartPlayNote();
             }
@@ -64,12 +66,13 @@ public class Player : MonoBehaviour {
     private void OnTriggerStay(Collider other)
     {
         if (currentNote != null)
-        { 
-            if (currentNote.transform.position.y < -currentNote.Duration - 3.5f)
+        {
+            //Agarramos suficiente tiempo la nota como para considerarla tomada
+            if (GameManager.NotePlayed(currentNote.transform.position.y, currentNote.Duration))
             {
                 if (currentNote.NoteType == _playerColor)
                 {
-                    currentNote.PushToPool();//llamo la funcion PushToPool de la clase "Note"
+                    currentNote.StopPlaying();
                     currentNote = null;
                 }
             }
@@ -80,15 +83,15 @@ public class Player : MonoBehaviour {
     {
         if (other.gameObject.layer == 9 && currentNote != null && currentNote.Id == other.GetComponent<Note>().Id)
         {
-            if (currentNote.transform.position.y < -currentNote.Duration - 4f)
+            if (GameManager.NoteIsBeyondPlayer(currentNote.transform.position.y, currentNote.Duration))
             {
-                //Debug.Break();
-                currentNote.PushToPool();//llamo la funcion PushToPool de la clase "Note"
+                //Terminanos la nota! Deberia de entrar en el otro chequeo antes
+                currentNote.StopPlaying();
                 currentNote = null;
             }
             else
             {
-                currentNote.CutCurrentNote();
+                //Nos fuimos antes de que termine la nota
                 MissNote();
             }
         }
@@ -96,17 +99,15 @@ public class Player : MonoBehaviour {
 
     private void StartPlayNote()
     {
-        //Esto no deberia estar aca pero boeh
+        currentNote.StartPlaying();
         GameManager.MelodyAudioSource.mute = false;
     }
 
     private void MissNote()
     {
-        //Esto no deberia estar aca pero boeh x2
-        GameManager.MelodyAudioSource.mute = true;
-        GameManager.FailFeedbackSource.Play();
-        currentNote.Missed = true;
+        currentNote.MissedNote(this.transform);
         currentNote = null;
+        GameManager.MissNote();
     }
 
     #region Functions

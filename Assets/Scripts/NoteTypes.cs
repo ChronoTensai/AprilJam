@@ -7,5 +7,6 @@ public enum TypeOfNotes
     Red,
     Green,
     Blue,
-    Yellow
+    Yellow,
+    None
 }

@@ -113,10 +113,25 @@ public static class GeometryCreator  {
         return triangles;
     }
 
-    public static Mesh CutGeometry(Mesh currentMesh)
+    public static Mesh CutGeometryAtPlayerPosition(Mesh currentMesh, Vector3 cutPosition)
     {
-        Mesh mesh = new Mesh();
-        return mesh;
+        Mesh newMesh = currentMesh;
+
+        List<Vector3> vertex = new List<Vector3>();
+        currentMesh.GetVertices(vertex);
+
+        for (int i = 0; i < vertex.Count; i++)
+        {
+            if (vertex[i].y <= cutPosition.y)
+            {
+                vertex.RemoveAt(i);
+                i--;
+            }
+        }
+
+
+
+        return newMesh;
     }
 
 

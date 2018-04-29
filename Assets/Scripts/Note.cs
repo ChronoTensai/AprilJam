@@ -13,8 +13,9 @@ public class Note : MonoBehaviour {
     public float Duration;
     private float   _xPosition;
     public float Velocity = 5;
-    public bool Missed = false;
+    public bool _missed = false;
     public int Id;
+    private bool _playing = false;
 
 
     public TypeOfNotes NoteType
@@ -88,9 +89,11 @@ public class Note : MonoBehaviour {
         _xPosition = noteInfo.XPosition;
     }
 
-    public void CutCurrentNote()
+    public GameObject test;
+
+    private void CutNote(Transform playerTransform)
     {
-        //NoteMeshFilter.mesh = GeometryCreator.CutGeometry(NoteMeshFilter.mesh);
+        NoteMeshFilter.mesh = GeometryCreator.CutGeometryAtPlayerPosition(NoteMeshFilter.mesh, this.transform.InverseTransformPoint(playerTransform.position));
     }
 
 
@@ -114,35 +117,76 @@ public class Note : MonoBehaviour {
     public void PopFromPool(float timeReturn)
     {
         Debug.Assert(IsAvaialbleforPop == true, "The pool size is too small");
+        
         transform.position = new Vector3(_xPosition, transform.position.y);
         gameObject.SetActive(true);
         isAvaialbleforPop = false;
         Invoke("PushToPool", timeReturn); //Durisimo
     }
 
-    public void PushToPool()
+    private void PushToPool()
     {
         CancelInvoke("PushToPool");
         if (_returnCallback != null)
             _returnCallback(this);
         gameObject.SetActive(false);
         isAvaialbleforPop = true;
-        Missed = false;
+        _missed = false;
+        _playing = false;
     }
 
     #endregion
 
+    public void StartPlaying()
+    {
+        SetEnabledPlayingFeedback(true);
+        this._playing = true;
+    }
+
+    public void StopPlaying()
+    {
+        SetEnabledPlayingFeedback(false);
+        this.PushToPool();
+    }
+
+    public void MissedNote(Transform playerTransform = null)
+    {
+        this._missed = true;
+        SetEnabledPlayingFeedback(false);
+
+        if (_playing && playerTransform != null)
+        {
+            //CutGeometry
+            //CutNote(playerTransform);
+        }
+    }
+
+    public void SetEnabledPlayingFeedback(bool isEnabled)
+    {
+        if (isEnabled)
+        {
+            //Prender
+        }
+        else
+        {
+            //Apagar
+        }
+         
+    }
 
     // bool breakOne = false;
      void Update()
      {
-         this.transform.Translate(Vector3.up * Velocity * -1 * Time.deltaTime);
+        this.transform.Translate(Vector3.up * Velocity * -1 * Time.deltaTime);
 
-         /*if (breakOne == false && this.transform.position.y <= -4f - Duration)
-         {
-             breakOne = true;
-             Debug.Break();
-         }*/
-}
+        if (_playing == false && _missed == false)
+        {
+            if (GameManager.NoteMissed(this.transform.position.y))
+            {
+                _missed = true;
+                GameManager.MissNote();
+            }
+        }
+    }
 
 }
