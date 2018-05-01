@@ -38,7 +38,6 @@ public class Player : MonoBehaviour {
     private void Awake()
     {
         GameManager.MISS_NOTE_Y = this.gameObject.transform.position.y - (gameObject.GetComponent<SpriteRenderer>().bounds.size.y /2);
-        GameManager.PLAYERt = this.transform;
         Debug.Log("heigh: " + gameObject.GetComponent<SpriteRenderer>().bounds.size.y + "  "+ this.transform.position );
         _maskPosition = new Vector3(this.transform.position.x, -4.41f, 0.49f); //Jam code yay!
         currentNotes = new List<Note>();
@@ -55,6 +54,11 @@ public class Player : MonoBehaviour {
     {
         Movement();
         ChangeColor();
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            GameManager.ResetLevel();
+        }
 	}
 
     private List<Note> currentNotes;

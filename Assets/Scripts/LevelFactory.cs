@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEditor;
+
 
 
 [System.Serializable]
@@ -39,7 +39,7 @@ public class LevelFactory : MonoBehaviour {
     void Awake ()
     {
         
-        EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
+        //EditorApplication.playModeStateChanged += HandleOnPlayModeChanged;
         GameManager.IsLevelEditor = EditingLevel;
 
         GetAudioSource();
@@ -184,7 +184,7 @@ public class LevelFactory : MonoBehaviour {
     }
 
     
-    void HandleOnPlayModeChanged(PlayModeStateChange newState)
+    /*void HandleOnPlayModeChanged(PlayModeStateChange newState)
     {
         if (EditorApplication.isPaused == true)
         {
@@ -194,7 +194,7 @@ public class LevelFactory : MonoBehaviour {
         {
             Debug.Log("Stop! Song Seconds: " + songSeconds + " Last Note Index: " + (noteIndex + notesDeleted - 1));
         }
-    }
+    }*/
 
 
 }

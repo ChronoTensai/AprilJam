@@ -136,25 +136,30 @@ public class Note : MonoBehaviour {
     public void PopFromPool(float timeReturn)
     {
         Debug.Assert(IsAvaialbleforPop == true, "The pool size is too small");
-        
+
+        _mask.transform.parent = this.transform;
+        _mask.SetActive(false);
         transform.position = new Vector3(_xPosition, transform.position.y);
-        gameObject.SetActive(true);
         isAvaialbleforPop = false;
         Invoke("PushToPool", timeReturn); //Durisimo
+        gameObject.SetActive(true);
     }
 
     private void PushToPool()
     {
-        _mask.transform.parent = this.transform;
-        _mask.SetActive(false);
-
+    
         CancelInvoke("PushToPool");
         if (_returnCallback != null)
             _returnCallback(this);
-        gameObject.SetActive(false);
+
+        _mask.transform.parent = this.transform;
+        _mask.SetActive(false);
         isAvaialbleforPop = true;
         _missed = false;
         _playing = false;
+
+        gameObject.SetActive(false);
+        
     }
 
     #endregion
